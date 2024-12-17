@@ -15,26 +15,18 @@ class FounderSwap:
         self.face_swapper = getFaceSwapModel(model_path)
         self.source_face = None
 
-    # def set_source_face(self, source_image_path: str):
-    #     source_image = Image.open(source_image_path)
-    #     source_faces = get_many_faces(self.face_analyser, cv2.cvtColor(
-    #         np.array(source_image), cv2.COLOR_RGB2BGR))
-    #     self.source_face = source_faces[0]
-
-    def set_source_face(self, source_image: np.array):
-        source_faces = get_many_faces(self.face_analyser, source_image)
+    def set_source_face(self, source_image_path: str):
+        source_image = Image.open(source_image_path)
+        source_faces = get_many_faces(self.face_analyser, cv2.cvtColor(
+            np.array(source_image), cv2.COLOR_RGB2BGR))
         self.source_face = source_faces[0]
-        print(self.source_face)
-        cv2.imshow('source_face', self.source_face)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+
+    # def set_source_face(self, source_image: np.array):
+    #     source_faces = get_many_faces(self.face_analyser, source_image)
+    #     self.source_face = source_faces[0]
 
     def swap_frame(self, frame: np.array):
         target_faces = get_many_faces(self.face_analyser, frame)
-        for i in range(len(target_faces)):
-            cv2.imshow(f"target_face{i}", target_faces[i])
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
         num_target_faces = len(target_faces)
         if target_faces is not None:
             temp_image = copy.deepcopy(frame)
@@ -58,7 +50,7 @@ if __name__ == "__main__":
     target_img = cv2.imread(target_img_path)
 
     face_swap = FounderSwap(model_dir=model_dir)
-    face_swap.set_source_face(source_img)
+    face_swap.set_source_face(source_img_path)
 
     result = face_swap.swap_frame(target_img)
     cv2.imshow("result", result)
