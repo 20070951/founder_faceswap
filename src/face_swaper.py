@@ -1,29 +1,26 @@
 import os
-import insightface
 import onnxruntime
-from libs.inswapper.swapper import *
 from PIL import Image
-# model_dir = "D:/Pycharm_Project/founder_faceswap/inswapper/checkpoints"
+import numpy as np
+import cv2
+import copy
+from inswapper.swapper import *
 
 
 class FounderSwap:
-    def __init__(self, model_dir: str, det_size: tuple[int, int] = (320, 320)):
+    def __init__(self, model_dir: str):
         providers = onnxruntime.get_available_providers()
         self.face_analyser = getFaceAnalyser(model_dir, providers)
-        self.face_analyser.prepare(ctx_id=0, det_size=det_size)
-        model_path = os.path.join(model_dir, 'inswapper_128_fp16.onnx')
+        self.face_analyser.prepare(ctx_id=0)
+        model_path = os.path.join(model_dir, 'inswapper_128.onnx')
         self.face_swapper = getFaceSwapModel(model_path)
         self.source_face = None
 
-    def set_source_face(self, source_image_path: str):
-        source_image = Image.open(source_image_path)
-        source_faces = get_many_faces(self.face_analyser, cv2.cvtColor(
-            np.array(source_image), cv2.COLOR_RGB2BGR))
-        self.source_face = source_faces[0]
-
-    # def set_source_face(self, source_image: np.array):
-    #     source_faces = get_many_faces(self.face_analyser, source_image)
-    #     self.source_face = source_faces[0]
+    def set_source_face(self, source_image: np.array):
+        # source_faces = get_many_faces(self.face_analyser, source_image)
+        # self.source_face = source_faces[0]
+        self.source_face = get_one_face(
+            self.face_analyser, source_image)
 
     def swap_frame(self, frame: np.array):
         target_faces = get_many_faces(self.face_analyser, frame)
@@ -44,13 +41,12 @@ class FounderSwap:
 
 if __name__ == "__main__":
     model_dir = "D:/Pycharm_Project/founder_faceswap-1/checkpoints"
-    source_img_path = "D:/Pycharm_Project/founder_faceswap-1/libs/inswapper/data/man1.jpeg"
-    target_img_path = "D:/Pycharm_Project/founder_faceswap-1/libs/inswapper/data/man2.jpeg"
+    source_img_path = "D:/Pycharm_Project/founder_faceswap/inswapper/data/man1.jpeg"
+    target_img_path = "D:/Pycharm_Project/founder_faceswap/inswapper/data/man2.jpeg"
     source_img = cv2.imread(source_img_path)
     target_img = cv2.imread(target_img_path)
-
     face_swap = FounderSwap(model_dir=model_dir)
-    face_swap.set_source_face(source_img_path)
+    face_swap.set_source_face(source_img)
 
     result = face_swap.swap_frame(target_img)
     cv2.imshow("result", result)
