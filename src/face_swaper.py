@@ -13,7 +13,7 @@ class FounderSwap:
         self.face_analyser = getFaceAnalyser(model_dir, providers)
         self.face_analyser.prepare(ctx_id=0)
         model_path = os.path.join(model_dir, 'inswapper_128.onnx')
-        self.face_swapper = getFaceSwapModel(model_path)
+        self.face_swapper = getFaceSwapModel(model_path, providers=providers)
         self.source_face = None
 
     def set_source_face(self, source_image: np.array):

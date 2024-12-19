@@ -1,2 +1,5 @@
-checkpoints/*
 .vscode
+checkpoints/*
+CodeFormer/*
+RestoreFormerPlusPlus/*
+*.png

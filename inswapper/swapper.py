@@ -15,8 +15,8 @@ from PIL import Image
 from typing import List, Union, Dict, Set, Tuple
 
 
-def getFaceSwapModel(model_path: str):
-    model = insightface.model_zoo.get_model(model_path)
+def getFaceSwapModel(model_path: str, providers: list):
+    model = insightface.model_zoo.get_model(model_path, providers=providers)
     return model
 
 
@@ -258,7 +258,7 @@ if __name__ == "__main__":
                            args.source_indexes, args.target_indexes, model)
 
     if args.face_restore:
-        from restoration import *
+        from inswapper.restoration_old import *
 
         # make sure the ckpts downloaded successfully
         check_ckpts()
@@ -282,10 +282,10 @@ if __name__ == "__main__":
 
         result_image = cv2.cvtColor(np.array(result_image), cv2.COLOR_RGB2BGR)
         result_image = face_restoration(result_image,
-                                        args.background_enhance,
-                                        args.face_upsample,
-                                        args.upscale,
-                                        args.codeformer_fidelity,
+                                        args.background_enhance,  # true
+                                        args.face_upsample,  # true
+                                        args.upscale,  # 2
+                                        args.codeformer_fidelity,  # 0.5
                                         upsampler,
                                         codeformer_net,
                                         device)
