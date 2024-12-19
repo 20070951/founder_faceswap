@@ -14,30 +14,40 @@ import sys
 sys.path.append('./CodeFormer/CodeFormer')
 
 
-def check_ckpts():
+def check_ckpts(model_dir='CodeFormer/CodeFormer/weights'):
     pretrain_model_url = {
         'codeformer': 'https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/codeformer.pth',
-        'detection': 'https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/detection_Resnet50_Final.pth',
+        # 'detection': 'https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/detection_Resnet50_Final.pth',
+        'detection': 'https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/detection_mobilenet0.25_Final.pth',
         'parsing': 'https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/parsing_parsenet.pth',
         'realesrgan': 'https://github.com/sczhou/CodeFormer/releases/download/v0.1.0/RealESRGAN_x2plus.pth'
     }
     # download weights
-    if not os.path.exists('CodeFormer/CodeFormer/weights/CodeFormer/codeformer.pth'):
-        load_file_from_url(
-            url=pretrain_model_url['codeformer'], model_dir='CodeFormer/CodeFormer/weights/CodeFormer', progress=True, file_name=None)
-    if not os.path.exists('CodeFormer/CodeFormer/weights/facelib/detection_Resnet50_Final.pth'):
-        load_file_from_url(
-            url=pretrain_model_url['detection'], model_dir='CodeFormer/CodeFormer/weights/facelib', progress=True, file_name=None)
-    if not os.path.exists('CodeFormer/CodeFormer/weights/facelib/parsing_parsenet.pth'):
-        load_file_from_url(
-            url=pretrain_model_url['parsing'], model_dir='CodeFormer/CodeFormer/weights/facelib', progress=True, file_name=None)
-    if not os.path.exists('CodeFormer/CodeFormer/weights/realesrgan/RealESRGAN_x2plus.pth'):
-        load_file_from_url(
-            url=pretrain_model_url['realesrgan'], model_dir='CodeFormer/CodeFormer/weights/realesrgan', progress=True, file_name=None)
+    codeformer_path = os.path.join(model_dir, 'CodeFormer/codeformer.pth')
+    facelib_detection_path = os.path.join(
+        model_dir, 'facelib/detection_mobilenet0.25_Final.pth')
+    facelib_parsing_path = os.path.join(
+        model_dir, 'facelib/parsing_parsenet.pth')
+    realesrgan_path = os.path.join(
+        model_dir, 'realesrgan/RealESRGAN_x2plus.pth')
 
+    if not os.path.exists(codeformer_path):
+        load_file_from_url(
+            url=pretrain_model_url['codeformer'], model_dir=os.path.dirname(codeformer_path), progress=True, file_name=None)
+    if not os.path.exists(facelib_detection_path):
+        load_file_from_url(
+            url=pretrain_model_url['detection'], model_dir=os.path.dirname(facelib_detection_path), progress=True, file_name=None)
+    if not os.path.exists(facelib_parsing_path):
+        load_file_from_url(
+            url=pretrain_model_url['parsing'], model_dir=os.path.dirname(facelib_parsing_path), progress=True, file_name=None)
+    if not os.path.exists(realesrgan_path):
+        load_file_from_url(
+            url=pretrain_model_url['realesrgan'], model_dir=os.path.dirname(realesrgan_path), progress=True, file_name=None)
 
 # set enhancer with RealESRGAN
-def set_realesrgan():
+
+
+def set_realesrgan(model_path="CodeFormer/CodeFormer/weights/realesrgan/RealESRGAN_x2plus.pth"):
     half = True if torch.cuda.is_available() else False
     model = RRDBNet(
         num_in_ch=3,
@@ -49,7 +59,7 @@ def set_realesrgan():
     )
     upsampler = RealESRGANer(
         scale=2,
-        model_path="CodeFormer/CodeFormer/weights/realesrgan/RealESRGAN_x2plus.pth",
+        model_path=model_path,
         model=model,
         tile=400,
         tile_pad=40,

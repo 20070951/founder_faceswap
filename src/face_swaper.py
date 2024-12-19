@@ -47,7 +47,6 @@ if __name__ == "__main__":
     target_img = cv2.imread(target_img_path)
     face_swap = FounderSwap(model_dir=model_dir)
     face_swap.set_source_face(source_img)
-
     result = face_swap.swap_frame(target_img)
     cv2.imshow("result", result)
     cv2.waitKey(0)
