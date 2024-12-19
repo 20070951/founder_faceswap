@@ -40,7 +40,7 @@
 
 2. **必需的库**：
 
-   - 其他依赖项可以通过 `requirements.txt` 文件安装。
+   - 通过 `requirements.txt` 文件安装。
 
 ### 安装步骤
 
@@ -51,10 +51,9 @@
    cd founder_faceswap
 ```
 2. 安装依赖：
-
-   ```bash
-    pip install -r requirements.txt
-    ```
+```bash
+   pip install -r requirements.txt
+```
 
 3. codeFormer安装：
 
