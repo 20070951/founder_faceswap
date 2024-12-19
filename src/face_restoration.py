@@ -46,13 +46,9 @@ if __name__ == "__main__":
     model_dir = 'D:/Pycharm_Project/founder_faceswap-1/checkpoints'
     restorationer = FounderRestoration(model_dir)
     image = cv2.imread('D:/Pycharm_Project/founder_faceswap-1/result.png')
-    import time
-    start = time.time()
-    for i in range(20):
-        result = restorationer.restoration_frame(image)
-        result = cv2.cvtColor(result, cv2.COLOR_RGB2BGR)
-        cv2.imshow(f'{i}', result)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
-    # delta = time.time()-start
-    # print(f'一共使用了{delta}秒！')
+
+    result = restorationer.restoration_frame(image)
+    result = cv2.cvtColor(result, cv2.COLOR_RGB2BGR)
+    cv2.imshow('result', result)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
