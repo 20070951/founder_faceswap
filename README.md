@@ -24,13 +24,13 @@
 
   
 
-- `src/`：包含修改后的源代码。
+- **src/**：包含修改后的源代码。
 
-  - **inswapper/**：核心的 InSwapper 换脸代码文件夹，已修改为完全支持 CPU 运行，并修复了与 ONNX 相关的问题。
+- **inswapper/**：核心的 InSwapper 换脸代码文件夹，已修改为完全支持 CPU 运行，并修复了与 ONNX 相关的问题。
 
-  - **codeformer/**：CodeFormer 图像提升代码文件夹。
+- **codeformer/**：CodeFormer 图像提升代码文件夹。
 
-  - **utils/**：用于图像处理、模型加载和执行的辅助函数和工具脚本。
+- **utils/**：用于图像处理、模型加载和执行的辅助函数和工具脚本。
 
 ## 安装
 ### 先决条件
